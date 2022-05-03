@@ -1,18 +1,20 @@
 #!/usr/bin/bash
 
 function usage() {
-    echo "fill_fs.sh <mnt point> <size in GB>"
+    echo "fill_fs.sh <mnt point> <size in GB> <number of iterations>"
     exit 1
 }
 
 [ -z "$1" ] && usage    
 [ -z "$2" ] && usage    
+[ -z "$3" ] && usage    
 
 mnt_pnt=$1
 size=$2
+itr=$3
 
 # repeat this process a few times to ensure gc is initiated
-for i in {0..5}; do
+for ((i=0;i<$itr;i++)); do
     # clear files
     rm -rf $mnt_pnt/*
     declare -a pids
