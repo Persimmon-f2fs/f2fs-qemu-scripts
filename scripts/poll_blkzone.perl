@@ -17,7 +17,7 @@ my $zone_resets = 0;
 
 # define signal handler
 $SIG{INT} = sub { 
-    print("==> Tracked: $zone_resets zone resets\n");
+    print("{\"zoneResets:\", $zone_resets}\n");
     exit 0
 };
 
