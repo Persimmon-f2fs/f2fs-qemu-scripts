@@ -1,0 +1,32 @@
+# The goal of this workload is not to judge performance, but more cause the garbage collection to
+# kick in and see how that works. This workload assumes 20G filesystems and can be scaled up if
+# needed.
+#
+# We use queue depth of 4, with sequential and random writes. We don't worry about reads for now.
+
+[global]
+name=garbagecollect
+bs=256k
+iodepth=4
+runtime=600
+directory=/mnt/f2fs/tmp
+group_reporting
+nrfiles=256
+file_service_type=zipf
+
+[seq-write]
+ioengine=libaio
+rw=write
+size=10g
+stonewall
+
+[delete]
+ioengine=filedelete
+size=4g
+unlink=0
+stonewall
+
+[rand-write]
+ioengine=libaio
+rw=randwrite
+size=4g
