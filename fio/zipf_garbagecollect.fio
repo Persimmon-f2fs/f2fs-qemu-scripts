@@ -15,6 +15,7 @@ nrfiles=256
 filename_format=fstest.$filenum
 
 [seq-write]
+file_service_type=roundrobin
 ioengine=libaio
 rw=write
 size=80g
@@ -30,6 +31,7 @@ nrfiles=128
 stonewall
 
 [rand-write]
+file_service_type=zipf
 nrfiles=50
 ioengine=libaio
 rw=randwrite
