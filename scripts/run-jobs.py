@@ -7,6 +7,10 @@ import multiprocessing as mp
 import asyncio
 import subprocess as sp
 import signal
+import sys
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 # define the argument parser
 parser = argparse.ArgumentParser(description='Run workloads concurrently')
@@ -53,13 +57,26 @@ async def main(fileArg: list):
     with open(file, 'r') as fp:
         config = yaml.safe_load(fp)
 
-    print(f'=====> Running {len(config["jobs"])} jobs')
+    eprint(f'=====> Running {len(config["jobs"])} jobs')
 
-    print(config)
+    allJobs = config["jobs"]
+    numParallel = config \
+        .get("config", {}) \
+        .get("numParallel", None) or allJobs
 
-    output = await asyncio.gather(
-        *[runJob(**job) for job in config["jobs"]]                    
-    ) 
+    output = []
+    
+    while allJobs:
+        run = []
+        while allJobs:
+            job = allJobs.pop(0) 
+            run.append(job)
+            if len(run) == numParallel:
+                break
+        runOutput = await asyncio.gather(
+            *[runJob(**job) for job in run]
+        )
+        output.extend(runOutput)
 
     print(json.dumps(output))
 
