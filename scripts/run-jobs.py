@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 import argparse
 import json
@@ -32,10 +32,18 @@ async def runJob(name, prereqs, command):
     commandProc = await cmd(command)
     result, _ = await commandProc.communicate()
 
+    resultJson = None
+    try:
+        resultJson = json.parse(result.decode('utf-8'))
+    except:
+        # failed to parse, silently fail
+        eprint("failed to parse!")
+        pass
+
     return {
         "name": name,
         "returncode": commandProc.returncode,
-        "output": result.decode('utf-8')
+        "output": resultJson if resultJson else result.decode('utf-8')
     }
 
 async def main(fileArg: list):

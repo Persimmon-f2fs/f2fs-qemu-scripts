@@ -21,8 +21,6 @@ $SIG{INT} = sub {
     exit 0
 };
 
-print("Polling for zone events\n");
-
 # loop until interrupted
 while (1) {
     # get zone information from blkzone
@@ -35,7 +33,6 @@ while (1) {
             if ($2 eq "em" && $not_reset_set{$1} ne "em") {
                 # zone was reset, increment
                 $zone_resets++;
-                print("Zone was reset!\n");
             }
         }
 

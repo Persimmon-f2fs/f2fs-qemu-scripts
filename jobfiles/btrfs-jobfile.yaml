@@ -1,0 +1,58 @@
+jobs:
+  - name: btrfs_mod_zipf
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/zipf
+      - sudo mkdir /mnt/btrfs/zipf
+      - sudo mkfs.btrfs -f /dev/nvme0n1
+      - sudo mount -t btrfs /dev/nvme0n1 /mnt/btrfs/zipf
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_zipf /mnt/btrfs/zipf /dev/nvme0n1 "--file_service_type=zipf" 
+  - name: btrfs_mod_roundrobin
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/roundrobin
+      - sudo mkdir /mnt/btrfs/roundrobin
+      - sudo mkfs.btrfs -f /dev/nvme1n1
+      - sudo mount -t btrfs /dev/nvme1n1 /mnt/btrfs/roundrobin
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_roundrobin /mnt/btrfs/roundrobin /dev/nvme1n1 "--file_service_type=roundrobin" 
+  - name: btrfs_mod_sequential
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/sequential
+      - sudo mkdir /mnt/btrfs/sequential
+      - sudo mkfs.btrfs -f /dev/nvme2n1
+      - sudo mount -t btrfs /dev/nvme2n1 /mnt/btrfs/sequential
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_sequential /mnt/btrfs/sequential /dev/nvme2n1 "--file_service_type=sequential" 
+  - name: btrfs_mod_random
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/random
+      - sudo mkdir /mnt/btrfs/random
+      - sudo mkfs.btrfs -f /dev/nvme3n1
+      - sudo mount -t btrfs /dev/nvme3n1 /mnt/btrfs/random
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_random /mnt/btrfs/random /dev/nvme3n1 "--file_service_type=random" 
+  - name: btrfs_mod_pareto
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/pareto
+      - sudo mkdir /mnt/btrfs/pareto
+      - sudo mkfs.btrfs -f /dev/nvme4n1
+      - sudo mount -t btrfs /dev/nvme4n1 /mnt/btrfs/pareto
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_pareto /mnt/btrfs/pareto /dev/nvme4n1 "--file_service_type=pareto" 
+  - name: btrfs_mod_normal
+    prereqs:
+      - sudo rm -rf /mnt/btrfs/normal
+      - sudo mkdir /mnt/btrfs/normal
+      - sudo mkfs.btrfs -f /dev/nvme5n1
+      - sudo mount -t btrfs /dev/nvme5n1 /mnt/btrfs/normal
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_normal /mnt/btrfs/normal /dev/nvme5n1 "--file_service_type=normal" 
+
+config: 
+  numParallel: 1
