@@ -1,0 +1,17 @@
+jobs:
+  - name: run_f2fs
+    prereqs: []
+    command: >
+      ssh ubuntu@localhost -p2222
+      "sudo /share/f2fs-qemu-scripts/scripts/run-jobs.py --file /share/f2fs-qemu-scripts/scripts/jobfiles/f2fs-jobfile.yaml"
+  - name: run_f2fs_mod
+    prereqs: []
+    command: >
+      ssh ubuntu@localhost -p2223
+      "sudo /share/f2fs-qemu-scripts/scripts/run-jobs.py --file /share/f2fs-qemu-scripts/scripts/jobfiles/mod-f2fs-jobfile.yaml"
+  - name: run_btrfs
+    prereqs: []
+    command: >
+      ssh ubuntu@localhost -p2223
+      "sudo /share/f2fs-qemu-scripts/scripts/run-jobs.py --file /share/f2fs-qemu-scripts/scripts/jobfiles/btrfs-jobfile.yaml"
+

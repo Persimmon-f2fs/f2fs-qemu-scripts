@@ -34,7 +34,7 @@ pids[1]=$!
 sudo smartctl -aj $device > $beforesmart_output
 
 # sudo filebench -f /share/workloads/fileserver.f > ${output_name}_benchmark
-sudo fio --directory="$test_dir" $fio_options /share/f2fs-qemu-scripts/fio/garbagecollect.fio 1> /dev/null 2>&1
+sudo fio --directory="$test_dir" $fio_options /share/f2fs-qemu-scripts/fio/garbagecollect.fio 1>> ./log.txt 2>> ./log.txt
 
 # record smart data after run
 sudo smartctl -aj $device > $aftersmart_output

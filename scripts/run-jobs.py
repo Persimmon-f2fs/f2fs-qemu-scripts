@@ -27,6 +27,7 @@ async def runJob(name, prereqs, command):
         prereqProc = await cmd(prereq)
         await prereqProc.communicate()
         if prereqProc.returncode != 0:
+            eprint(f'failed: {prereq}')
             return {
                 "name": name,
                 "returncode": prereqProc.returncode,
@@ -38,11 +39,10 @@ async def runJob(name, prereqs, command):
 
     resultJson = None
     try:
-        resultJson = json.parse(result.decode('utf-8'))
-    except:
+        resultJson = json.loads(result.decode('utf-8'))
+    except Exception as e:
         # failed to parse, silently fail
-        eprint("failed to parse!")
-        pass
+        eprint(e)
 
     return {
         "name": name,
