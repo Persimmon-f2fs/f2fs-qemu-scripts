@@ -20,6 +20,7 @@ blkzone_output=/tmp/${output_name}_blkzone.txt
 meminfo_output=/tmp/${output_name}_meminfo.txt
 beforesmart_output=/tmp/${output_name}_beforesmart.json
 aftersmart_output=/tmp/${output_name}_aftersmart.json
+fio_output=/tmp/${output_name}_fio.json
 
 # remove tmp files (potentially from previous run)
 sudo rm -f $blkzone_output $meminfo_output $beforesmart_output $aftersmart_output
@@ -34,7 +35,7 @@ pids[1]=$!
 sudo smartctl -aj $device > $beforesmart_output
 
 # sudo filebench -f /share/workloads/fileserver.f > ${output_name}_benchmark
-sudo fio --directory="$test_dir" $fio_options /share/f2fs-qemu-scripts/fio/garbagecollect.fio 1>> ./log.txt 2>> ./log.txt
+sudo fio --directory="$test_dir" --output=json $fio_options /share/f2fs-qemu-scripts/fio/garbagecollect.fio 1> ${fio_output} 2>> ./log.txt
 
 # record smart data after run
 sudo smartctl -aj $device > $aftersmart_output
@@ -48,6 +49,7 @@ done
 echo '{'
 echo "\"blkzone\": $(cat ${blkzone_output}),"
 echo "\"meminfo\": $(cat ${meminfo_output}),"
+echo "\"fioInfo\": $(cat ${fio_output}),"
 echo "\"beforesmart\": $(cat ${beforesmart_output}),"
 echo "\"aftersmart\": $(cat ${aftersmart_output})"
 echo '}'
