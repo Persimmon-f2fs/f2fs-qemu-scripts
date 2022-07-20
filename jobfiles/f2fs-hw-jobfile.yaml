@@ -1,0 +1,41 @@
+definitions:
+  prereqs: &test-prereq
+    - sudo rm -rf /mnt/f2fs/tmp
+    - sudo mkdir -p /mnt/f2fs/tmp
+    - sudo mkfs.f2fs -f -m -c /dev/nvme0n2 /dev/nvme0n1 
+    - sudo mount -t f2fs /dev/nvme0n1 /mnt/f2fs
+
+jobs:
+  - name: f2fs_zipf
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_zipf /mnt/f2fs/tmp /dev/nvme0n1 "--file_service_type=zipf" 
+  - name: f2fs_roundrobin
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_roundrobin /mnt/f2fs/tmp /dev/nvme1n1 "--file_service_type=roundrobin" 
+  - name: f2fs_sequential
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_sequential /mnt/f2fs/tmp /dev/nvme2n1 "--file_service_type=sequential" 
+  - name: f2fs_random
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_random /mnt/f2fs/tmp /dev/nvme3n1 "--file_service_type=random" 
+  - name: f2fs_pareto
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_pareto /mnt/f2fs/tmp /dev/nvme4n1 "--file_service_type=pareto" 
+  - name: f2fs_normal
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_normal /mnt/f2fs/tmp /dev/nvme5n1 "--file_service_type=normal" 
+
+config: 
+  numParallel: 1
