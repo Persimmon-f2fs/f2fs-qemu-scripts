@@ -30,14 +30,14 @@ sudo bash -c "echo mq-deadline > /sys/block/nvme0n2/queue/scheduler"
 # 3. prepare linear mapped devices
 if ! [[ -e /dev/mapper/mapped-nvme0n2 ]]; then
   echo "creating mapped-nvme0n2"
-  sudo $PWD/map-device.sh 196 /dev/nvme0n2 mapped-nvme0n2 || exit 1
+  sudo $PWD/map-device.sh 96 /dev/nvme0n2 mapped-nvme0n2 || exit 1
 else
   echo "mapped-nvme0n2 already exists!"
 fi
 
 if ! [[ -e /dev/mapper/mapped-nvme1n2 ]]; then
   echo "creating mapped-nvme1n2"
-  sudo $PWD/map-device.sh 202 /dev/nvme1n2 mapped-nvme1n2 || exit 1
+  sudo $PWD/map-device.sh 100 /dev/nvme1n2 mapped-nvme1n2 || exit 1
 else
   echo "mapped-nvme1n2 already exists"
 fi
