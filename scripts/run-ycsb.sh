@@ -32,39 +32,38 @@ function run_ycsb() {
         mkdir $output_dir
     fi
 
-    sudo /scratch/ycsb-0.17.0/bin/ycsb load-a rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloada -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/load-a
+    sudo /scratch/ycsb-0.17.0/bin/ycsb load rocksdb \
+    -s -P /scratch/ycsb-0.17.0/modified-workloads/workloada \
+    -p recordcount=$recordcount \
+    -p operationcount=$operationcount \
+    -p rocksdb.dir=$target_dir \
+    -p  hdrhistogram.output.path=$output_dir/loada
 
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloada -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-a
-
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloadb -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-b
-
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloadc -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-c
-
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloadf -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-f
-
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloadd -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-d
+    for workload in a b c f d
+    do
+        sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb \
+        -s -P /scratch/ycsb-0.17.0/modified-workloads/workload$workload \
+        -p recordcount=$recordcount \
+        -p operationcount=$operationcount \
+        -p rocksdb.dir=$target_dir \
+        -p  hdrhistogram.output.path=$output_dir/run$workload
+    done
 
     sudo rm -rf $target_dir
 
-    sudo /scratch/ycsb-0.17.0/bin/ycsb load rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloade -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/load-e
+    sudo /scratch/ycsb-0.17.0/bin/ycsb load rocksdb \
+    -s -P /scratch/ycsb-0.17.0/modified-workloads/workloade \
+    -p recordcount=$recordcount \
+    -p operationcount=$operationcount \
+    -p rocksdb.dir=$target_dir \
+    -p  hdrhistogram.output.path=$output_dir/loade
 
-    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb -s -P /scratch/ycsb-0.17.0/workloads/workloade -p recordcount=$recordcount \
-    -p operationcount=$operationcount -p rocksdb.dir=$target_dir > \
-    $output_dir/run-e
+    sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb \
+    -s -P /scratch/ycsb-0.17.0/modified-workloads/workloade \
+    -p recordcount=$recordcount \
+    -p operationcount=$operationcount \
+    -p rocksdb.dir=$target_dir \
+    -p  hdrhistogram.output.path=$output_dir/rune
 }
 
 main $1 $2 $3 $4
