@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-# Use this script for configuring the cloud image easily
+# Use this script for running all ycsb benchmarks
 
 function usage() {
 	echo "run-ycsb.sh <recordcount> <operationcount> <directory> <output
@@ -49,20 +49,20 @@ function run_ycsb() {
         -p  hdrhistogram.output.path=$output_dir/run$workload
     done
 
-    sudo rm -rf $target_dir
+#    sudo rm -rf $target_dir
 
     sudo /scratch/ycsb-0.17.0/bin/ycsb load rocksdb \
     -s -P /scratch/ycsb-0.17.0/modified-workloads/workloade \
     -p recordcount=$recordcount \
     -p operationcount=$operationcount \
-    -p rocksdb.dir=$target_dir \
+    -p rocksdb.dir=${target_dir}1 \
     -p  hdrhistogram.output.path=$output_dir/loade
 
     sudo /scratch/ycsb-0.17.0/bin/ycsb run rocksdb \
     -s -P /scratch/ycsb-0.17.0/modified-workloads/workloade \
     -p recordcount=$recordcount \
     -p operationcount=$operationcount \
-    -p rocksdb.dir=$target_dir \
+    -p rocksdb.dir=${target_dir}1 \
     -p  hdrhistogram.output.path=$output_dir/rune
 }
 
