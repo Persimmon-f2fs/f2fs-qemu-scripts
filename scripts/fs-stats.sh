@@ -34,6 +34,8 @@ function get_stats(){
     echo "moved_blocks_foreground,$(cat /sys/fs/$filesystem/moved_blocks_foreground)" >> $output_dir/fs.csv
     echo "gc_reclaimed_segments,$(cat /sys/fs/$filesystem/gc_reclaimed_segments)" >> $output_dir/fs.csv
     echo "lifetime_write_kbytes,$(cat /sys/fs/$filesystem/lifetime_write_kbytes)" >> $output_dir/fs.csv
+    echo "gc_background_calls,$(cat /sys/fs/$filesystem/gc_background_calls)" >> $output_dir/fs.csv
+    echo "gc_foreground_calls,$(cat /sys/fs/$filesystem/gc_foreground_calls)" >> $output_dir/fs.csv
 }
 
 main $1 $2 $3
