@@ -21,14 +21,13 @@ function main() {
 		echo "$filesystem does not exist or is not a directory"
 		exit 1
 	fi
-	if ! [[ -d "$output_dir" ]]; then
-		mkdir $output_dir
-	fi
     get_stats
 }
 
 function get_stats(){
-
+    if ! [[ -d $output_dir ]]; then
+        mkdir $output_dir
+    fi
     sudo smartctl -Aj /dev/$device > $output_dir/smart.json
     echo "moved_blocks_background,$(cat /sys/fs/$filesystem/moved_blocks_background)" > $output_dir/fs.csv
     echo "moved_blocks_foreground,$(cat /sys/fs/$filesystem/moved_blocks_foreground)" >> $output_dir/fs.csv

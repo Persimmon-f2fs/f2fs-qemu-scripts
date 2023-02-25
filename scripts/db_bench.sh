@@ -24,23 +24,23 @@ wait
 ./f2fs-qemu-scripts/scripts/fs-stats.sh nvme0n2 f2fs/nvme0n1 f2fs/f2fs-fill
 ./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-fill
 
-#./rocksdb/db_bench -db=/mnt/f2fs_mod \
-#-benchmarks="deleterandom,stats" --statistics --seed=2 \
-#--target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
-#--max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
-#-num=50000000 -threads=4 > us/deleterandom.txt &
-#
-#
-#./rocksdb/db_bench -db=/mnt/f2fs \
-#-benchmarks="deleterandom,stats" --statistics --seed=2 \
-#--target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
-#--max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
-#-num=50000000 -threads=4 > f2fs/deleterandom.txt &
+./rocksdb/db_bench -db=/mnt/f2fs_mod \
+-benchmarks="deleterandom,stats" --statistics --seed=2 \
+--target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
+--max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
+-num=50000000 -threads=4 > us/deleterandom.txt &
 
-#wait
-#
-#./f2fs-qemu-scripts/scripts/fs-stats.sh nvme0n2 f2fs/nvme0n1 f2fs/f2fs-del
-#./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-del
+
+./rocksdb/db_bench -db=/mnt/f2fs \
+-benchmarks="deleterandom,stats" --statistics --seed=2 \
+--target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
+--max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
+-num=50000000 -threads=4 > f2fs/deleterandom.txt &
+
+wait
+
+./f2fs-qemu-scripts/scripts/fs-stats.sh nvme0n2 f2fs/nvme0n1 f2fs/f2fs-del
+./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-del
 
 ./rocksdb/db_bench -db=/mnt/f2fs_mod \
 -benchmarks="updaterandom,stats" --statistics --seed=2 \
@@ -61,35 +61,35 @@ wait
 ./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-update
 
 ./rocksdb/db_bench -db=/mnt/f2fs_mod \
--benchmarks="readwhilewriting,stats" --statistics --seed=2 \
+-benchmarks="overwrite,stats" --statistics --seed=2 \
 --target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
 --max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
--num=10000000 -threads=16 > us/readwhile.txt &
+-num=20000000 -threads=16 > us/overwrite.txt &
 
 
 ./rocksdb/db_bench -db=/mnt/f2fs \
--benchmarks="readwhilewriting,stats" --statistics --seed=2 \
+-benchmarks="overwrite,stats" --statistics --seed=2 \
 --target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
 --max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
--num=10000000 -threads=16 > f2fs/readwhile.txt &
+-num=20000000 -threads=16 > f2fs/overwrite.txt &
 
 wait
 
-./f2fs-qemu-scripts/scripts/fs-stats.sh nvme0n2 f2fs/nvme0n1 f2fs/f2fs-readwhile
-./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-readwhile
+./f2fs-qemu-scripts/scripts/fs-stats.sh nvme0n2 f2fs/nvme0n1 f2fs/f2fs-overwrite
+./f2fs-qemu-scripts/scripts/fs-stats.sh nvme1n2 f2fs_mod/dm-5 us/us-overwrite
 
 ./rocksdb/db_bench -db=/mnt/f2fs_mod \
 -benchmarks="readrandom,stats" --statistics \
 --target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
 --max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
--num=50000000 -threads=16 > us/readrandom.txt &
+-num=20000000 -threads=16 > us/readrandom.txt &
 
 
 ./rocksdb/db_bench -db=/mnt/f2fs \
 -benchmarks="readrandom,stats" --statistics \
 --target_file_size_base=1129316352 -use_direct_io_for_flush_and_compaction -use_existing_db \
 --max_bytes_for_level_multiplier=4 --max_background_jobs=8 \
--num=50000000 -threads=16 > f2fs/readrandom.txt &
+-num=20000000 -threads=16 > f2fs/readrandom.txt &
 
 wait
 
