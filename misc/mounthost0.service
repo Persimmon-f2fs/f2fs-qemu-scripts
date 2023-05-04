@@ -1,0 +1,10 @@
+# /etc/systemd/system/mounthost0.service
+[Unit]
+Description=Mount host0
+
+[Service]
+type=oneshot
+ExecStart=/usr/bin/mount -t 9p -o trans=virtio host0 /share -oversion-9p2000.L,posixacl
+
+[Install]
+WantedBy=multi-user.target
