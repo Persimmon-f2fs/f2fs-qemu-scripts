@@ -10,7 +10,8 @@ my $iterations = 0;
 
 # register signal handler
 $SIG{INT} = sub {
-    print("Peak usage: $largestSlab KB, Avg usage: $avgSlab\n");
+    my $avgInt = int($avgSlab);
+    print("{\"largestSlab\": $largestSlab, \"avgSlab\": $avgInt}\n");
     exit(0);
 };
 

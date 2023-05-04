@@ -21,14 +21,14 @@ for ((i=0;i<$itr;i++)); do
 
     # write $size number of individual GB
     for ((j=0;j<$size;j++)); do
-        dd if=/dev/random of=$mnt_pnt/file$j.txt bs=1MB count=1024 1>/dev/null &
-        pids[$j]=$! 
+        dd if=/dev/random of=$mnt_pnt/file$j.txt bs=1MB count=900 1>/dev/null
+        # pids[$j]=$! 
     done
 
     # wait on all pids
-    for pid in ${pids[*]}; do
-        wait $pid
-    done
+#    for pid in ${pids[*]}; do
+       # wait $pid
+#    done
     
     # indicate we've done a single run
     echo "Itr: $i, Wrote $size GB."

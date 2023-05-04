@@ -1,0 +1,38 @@
+# The goal of this workload is not to judge performance, but more cause the garbage collection to
+# kick in and see how that works. This workload assumes 20G filesystems and can be scaled up if
+# needed.
+#
+# We use queue depth of 4, with sequential and random writes. We don't worry about reads for now.
+
+# specify directory in the command line using --directory=[directory of choice]
+
+[global]
+name=garbagecollect
+bs=256k
+iodepth=4
+group_reporting
+nrfiles=256
+filename_format=fstest.$filenum
+
+[seq-write]
+ioengine=libaio
+rw=write
+size=80g
+fsync=1
+stonewall
+
+[delete]
+file_service_type=roundrobin
+ioengine=filedelete
+unlink=0
+fsync=1
+nrfiles=128
+stonewall
+
+[rand-write]
+nrfiles=50
+ioengine=libaio
+rw=randwrite
+size=20g
+direct=1
+stonewall

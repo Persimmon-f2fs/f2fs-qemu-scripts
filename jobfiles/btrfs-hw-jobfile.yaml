@@ -1,0 +1,41 @@
+definitions:
+  prereqs: &test-prereq
+    - sudo rm -rf /mnt/btrfs/tmp
+    - sudo mkdir -p /mnt/btrfs/tmp
+    - sudo mkfs.btrfs -f /dev/nvme1n2 
+    - sudo mount -t btrfs /dev/nvme1n2 /mnt/btrfs
+
+jobs:
+  - name: btrfs_zipf
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_mod_zipf /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=zipf" 
+  - name: btrfs_roundrobin
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_roundrobin /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=roundrobin" 
+  - name: btrfs_sequential
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_sequential /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=sequential" 
+  - name: btrfs_random
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_random /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=random" 
+  - name: btrfs_pareto
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_pareto /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=pareto" 
+  - name: btrfs_normal
+    prereqs: *test-prereq
+    command: >
+      sudo /data/main-share//f2fs-qemu-scripts/scripts/execute-workload.sh
+      btrfs_normal /mnt/btrfs/tmp /dev/nvme1n2 "--file_service_type=normal" 
+
+config: 
+  numParallel: 1

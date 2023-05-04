@@ -1,0 +1,58 @@
+jobs:
+  - name: f2fs_mod_zipf
+    prereqs:
+      - sudo rm -rf /mnt/f2fs/zipf
+      - sudo mkdir /mnt/f2fs/zipf
+      - sudo mkfs.f2fs -f -m -c /dev/nvme0n1 /dev/nvme0n2
+      - sudo mount -t f2fs /dev/nvme0n2 /mnt/f2fs/zipf
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_zipf /mnt/f2fs/zipf /dev/nvme0n1 "--file_service_type=zipf" 
+  - name: f2fs_mod_roundrobin
+    prereqs:
+      - sudo rm -rf /mnt/f2fs/roundrobin
+      - sudo mkdir /mnt/f2fs/roundrobin
+      - sudo mkfs.f2fs -f -m -c /dev/nvme1n1 /dev/nvme1n2
+      - sudo mount -t f2fs /dev/nvme1n2 /mnt/f2fs/roundrobin
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_roundrobin /mnt/f2fs/roundrobin /dev/nvme1n1 "--file_service_type=roundrobin" 
+  - name: f2fs_mod_sequential
+    prereqs:
+    - sudo rm -rf /mnt/f2fs/sequential
+    - sudo mkdir /mnt/f2fs/sequential
+    - sudo mkfs.f2fs -f -m -c /dev/nvme2n1 /dev/nvme2n2
+    - sudo mount -t f2fs /dev/nvme2n2 /mnt/f2fs/sequential
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_sequential /mnt/f2fs/sequential /dev/nvme2n1 "--file_service_type=sequential" 
+  - name: f2fs_mod_random
+    prereqs:
+    - sudo rm -rf /mnt/f2fs/random
+    - sudo mkdir /mnt/f2fs/random
+    - sudo mkfs.f2fs -f -m -c /dev/nvme3n1 /dev/nvme3n2
+    - sudo mount -t f2fs /dev/nvme3n2 /mnt/f2fs/random
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_random /mnt/f2fs/random /dev/nvme3n1 "--file_service_type=random" 
+  - name: f2fs_mod_pareto
+    prereqs:
+    - sudo rm -rf /mnt/f2fs/pareto
+    - sudo mkdir /mnt/f2fs/pareto
+    - sudo mkfs.f2fs -f -m -c /dev/nvme4n1 /dev/nvme4n2
+    - sudo mount -t f2fs /dev/nvme4n2 /mnt/f2fs/pareto
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_pareto /mnt/f2fs/pareto /dev/nvme4n1 "--file_service_type=pareto" 
+  - name: f2fs_mod_normal
+    prereqs:
+    - sudo rm -rf /mnt/f2fs/normal
+    - sudo mkdir /mnt/f2fs/normal
+    - sudo mkfs.f2fs -f -m -c /dev/nvme5n1 /dev/nvme5n2
+    - sudo mount -t f2fs /dev/nvme5n2 /mnt/f2fs/normal
+    command: >
+      sudo /share/f2fs-qemu-scripts/scripts/execute-workload.sh
+      f2fs_mod_normal /mnt/f2fs/normal /dev/nvme5n1 "--file_service_type=normal" 
+
+config: 
+  numParallel: 1
